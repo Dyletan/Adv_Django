@@ -4,7 +4,6 @@ from .models import User, Project, Category, Priority, Task
 from .serializers import UserSerializer, ProjectSerializer, CategorySerializer, PrioritySerializer, TaskSerializer
 from rest_framework.filters import SearchFilter 
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.permissions import IsAuthenticated
 from .permissions import IsAdmin, IsManager, IsEmployee  
 
 class UserViewSet(ModelViewSet): 
