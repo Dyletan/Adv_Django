@@ -6,22 +6,43 @@ class UserSerializer(serializers.ModelSerializer):
         model = User 
         fields = '__all__' 
 
-class ProjectSerializer(serializers.ModelSerializer): 
-    class Meta: 
-        model = Project 
-        fields = '__all__' 
-
-class CategorySerializer(serializers.ModelSerializer): 
-    class Meta: 
-        model = Category 
-        fields = '__all__' 
-
-class PrioritySerializer(serializers.ModelSerializer): 
-    class Meta: 
-        model = Priority 
-        fields = '__all__' 
-
-class TaskSerializer(serializers.ModelSerializer): 
-    class Meta: 
-        model = Task 
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
         fields = '__all__'
+
+    def validate_name(self, value):
+        if len(value) < 5:
+            raise serializers.ValidationError("Project name must be at least 5 characters long.")
+        return value
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+class PrioritySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Priority
+        fields = '__all__'
+
+    def validate_level(self, value):
+        allowed_levels = ["Low", "Medium", "High"]
+        if value not in allowed_levels:
+            raise serializers.ValidationError(f"Priority level must be one of {allowed_levels}.")
+        return value
+
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = '__all__'
+
+    def validate_title(self, value):
+        if len(value) < 5:
+            raise serializers.ValidationError("Title must be at least 5 characters long.")
+        return value
+
+    def validate_description(self, value):
+        if len(value) < 5:
+            raise serializers.ValidationError("Description must be at least 5 characters long.")
+        return value

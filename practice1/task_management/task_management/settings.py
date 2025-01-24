@@ -48,7 +48,12 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter', 
     ], 
     'PAGE_SIZE': 10, 
-} 
+    'DEFAULT_AUTHENTICATION_CLASSES': [ 
+        'rest_framework_simplejwt.authentication.JWTAuthentication', 
+    ], 
+}
+
+AUTH_USER_MODEL = 'core.User' 
 
 LOGGING = { 
     'version': 1, 
@@ -79,7 +84,7 @@ ROOT_URLCONF = 'task_management.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'core/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
