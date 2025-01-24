@@ -12,6 +12,9 @@ class User(AbstractUser):
     def __str__(self): 
         return f"{self.username} ({self.role})"
     
+    class Meta:
+        ordering = ['id']
+    
 class Project(models.Model): 
     name = models.CharField(max_length=100) 
     description = models.TextField() 

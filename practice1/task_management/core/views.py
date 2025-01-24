@@ -5,6 +5,7 @@ from .serializers import UserSerializer, ProjectSerializer, CategorySerializer, 
 from rest_framework.filters import SearchFilter 
 from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import IsAdmin, IsManager, IsEmployee  
+from rest_framework.exceptions import PermissionDenied
 
 class UserViewSet(ModelViewSet): 
     queryset = User.objects.all() 
@@ -33,4 +34,18 @@ class TaskViewSet(ModelViewSet):
     permission_classes = [IsEmployee]
     
     def perform_create(self, serializer): 
-        serializer.save()    
+        serializer.save()
+    
+    def retrieve(self, request, *args, **kwargs):
+        task = self.get_object()
+
+        if request.user.role == 'employee' and task.assignee != request.user:
+            raise PermissionDenied("You do not have permission to view this task.")
+        return super().retrieve(request, *args, **kwargs)
+
+    def perform_update(self, serializer):
+        task = self.get_object()
+
+        if self.request.user.role == 'employee' and task.assignee != self.request.user:
+            raise PermissionDenied("You cannot update tasks not assigned to you.")
+        serializer.save()
