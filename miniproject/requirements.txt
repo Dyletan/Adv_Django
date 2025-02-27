@@ -1,0 +1,10 @@
+Django
+djangorestframework
+djangorestframework-simplejwt
+celery
+redis
+drf-yasg
+django-filter
+Pillow
+pdfkit
+requests
