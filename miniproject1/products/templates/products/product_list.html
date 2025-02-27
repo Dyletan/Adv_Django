@@ -1,0 +1,27 @@
+{% extends 'base.html' %}  {# Extend the base template #}
+{% load static %} {# Load static tag library #}
+
+{% block title %}Product List - Sales & Trading App{% endblock %} {# Override title block #}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/product_list.css' %}"> {# Example: Add page-specific CSS #}
+{% endblock %}
+
+{% block content %}  {# Override content block #}
+    <h1>Product Catalog</h1>
+    <p>Browse our available products:</p>
+    <ul>
+        {% for product in products %}
+            <li>
+                <a href="{% url 'product-detail-html' product.id %}">{{ product.name }}</a> - Category: {{ product.category.name }}
+            </li>
+        {% empty %}
+            <li>No products available.</li>
+        {% endfor %}
+    </ul>
+    <p><a href="{% url 'index' %}">Back to Home</a></p>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/product_list.js' %}"></script> {# Example: Add page-specific JS #}
+{% endblock %}

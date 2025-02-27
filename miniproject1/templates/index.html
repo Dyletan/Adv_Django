@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to the Sales & Trading Platform{% endblock %}
+{% block header_title %}Welcome!{% endblock %}  {% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Explore the Sales & Trading World</h1>
+    <p class="lead">This platform is designed to facilitate sales, trading, and analytics for financial instruments.</p>
+    <hr class="my-4">
+    <p>Get started by registering or logging in to access the platform's features.</p>
+    {% if not user.is_authenticated %}
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Register Now</a>
+        <a class="btn btn-secondary btn-lg" href="{% url 'login' %}" role="button">Login</a>
+    </p>
+    {% endif %}
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Key Features</h2>
+        <ul>
+            <li>User Registration and Authentication</li>
+            <li>Role-Based Access Control</li>
+            <li>Product Catalog Management</li>
+            <li>Trading Order Management</li>
+            <li>Sales Order Processing</li>
+            <li>Analytics and Reporting (Coming Soon)</li>
+            <li>Notifications (Coming Soon)</li>
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <h2>Get Started</h2>
+        <p>Register or log in to begin using the platform.  As a registered user, you can explore different roles and functionalities based on your assigned permissions.</p>
+        <p>If you are an administrator, log in to manage users, products, and system settings.</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+Django
+djangorestframework
+djangorestframework-simplejwt
+celery
+redis
+drf-yasg
+django-filter
+Pillow
+django-crispy-forms
+crispy-bootstrap4
+pdfkit

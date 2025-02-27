@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Your Site Title{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <header class="bg-dark text-white py-3">  <div class="container">
+            <h1>{% block header_title %}Sales & Trading Platform{% endblock %}</h1>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">  <a class="navbar-brand" href="{% url 'index' %}">Home</a> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><span class="nav-link">Welcome, {{ user.username }} ({{ user.role|capfirst }})</span></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'marketplace' %}">Marketplace</a></li>
+                
+                        {% if user.role == 'trader' %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'trading:create_listing' %}">Create Listing</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'trading:my_orders' %}">My Orders</a></li>
+                        {% elif user.role == 'customer' %}  {# Customer Role #}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'customer:order_history' %}">Order History</a></li>
+                        {% elif user.role == 'admin' %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
+                        {% endif %}
+                
+                        <li class="nav-item"><a class="nav-link" href="{% url 'users:logout' %}">Logout</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+                
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'users:register' %}">Register</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'users:login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'marketplace' %}">Marketplace</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <footer class="mt-5 bg-light text-center py-2"> <p>&copy; {% now "Y" %} Your Company Name. All rights reserved.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

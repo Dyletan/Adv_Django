@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sales Order List</title>
+</head>
+<body>
+    <h1>Sales Orders</h1>
+    <ul>
+        {% for sales_order in sales_orders %}
+            <li>
+                Sales Order #{{ sales_order.id }} - Customer: {{ sales_order.customer_username }} - Status: {{ sales_order.get_status_display }} - Order Date: {{ sales_order.order_date }}
+            </li>
+        {% empty %}
+            <li>No sales orders created yet.</li>
+        {% endfor %}
+    </ul>
+    <p><a href="{% url 'sales-order-create-html' %}">Create New Sales Order</a></p>
+    <p><a href="{% url 'index' %}">Back to Home</a></p>
+</body>
+</html>
