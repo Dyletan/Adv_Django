@@ -27,6 +27,15 @@ def logout(token, refresh_token):
     else:
         print("Logout failed:", response.text)
 
+def get_profile(token):
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.get(f"{BASE_URL}/users/profile/", headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print("Failed to fetch profile:", response.text)
+        return None
+
 # CUSTOMER FUNCTIONS
 def list_products(token):
     headers = {"Authorization": f"Bearer {token}"}
@@ -112,12 +121,14 @@ def create_product(token, seller_id):
     category = input("Enter category ID for the product: ").strip()
     price = input("Enter product price: ").strip()
     quantity = input("Enter product quantity: ").strip()
+    description = input("Enter product descritpion: ").strip()
     product_data = {
         "name": name,
         "category": category,
         "price": price,
         "quantity": quantity,
-        "seller": seller_id
+        "seller": seller_id,
+        "description": description
     }
     response = requests.post(f"{BASE_URL}/products/add/", json=product_data, headers=headers)
     if response.status_code in [200, 201]:
@@ -273,8 +284,10 @@ def main():
                 print("Invalid action.")
         elif current_role == "trader":
             if action == "1":
-                seller_id = input("Enter your user ID (trader): ").strip()  # Alternatively, you can hardcode if known
-                create_product(current_token, seller_id)
+                profile = get_profile(current_token)
+                if profile:
+                    seller_id = profile.get("id")
+                    create_product(current_token, seller_id)
             elif action == "2":
                 list_products(current_token)
             elif action == "3":
