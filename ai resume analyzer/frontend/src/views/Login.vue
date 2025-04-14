@@ -73,11 +73,6 @@ export default {
   methods: {
     async login() {
       try {
-        // Clear localStorage to prevent stale data
-        localStorage.removeItem('access_token')
-        localStorage.removeItem('refresh_token')
-        localStorage.removeItem('user_role')
-
         this.error = null
         const response = await apiClient.post('/auth/login/', this.loginForm)
         console.log('Login response:', response.data) // Debug log to inspect backend response
@@ -90,7 +85,6 @@ export default {
         localStorage.setItem('access_token', access)
         localStorage.setItem('refresh_token', refresh)
         localStorage.setItem('user_role', role)
-        console.log('Stored user_role:', role) // Debug log to confirm stored role
 
         this.resetForms()
         this.$router.push('/jobs')

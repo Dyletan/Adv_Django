@@ -9,11 +9,11 @@
     </div>
     <form @submit.prevent="uploadResume" class="max-w-md">
       <div class="mb-4">
-        <label for="resume" class="block text-gray-700 font-medium mb-2">Select Resume (PDF only)</label>
+        <label for="resume" class="block text-gray-700 font-medium mb-2">Select Resume (PDF or DOCX)</label>
         <input
           type="file"
           id="resume"
-          accept=".pdf"
+          accept=".pdf,.docx"
           @change="handleFileChange"
           class="block w-full text-gray-700 border border-gray-300 rounded py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
@@ -44,12 +44,12 @@ export default {
   methods: {
     handleFileChange(event) {
       const selectedFile = event.target.files[0]
-      if (selectedFile && selectedFile.type === 'application/pdf') {
+      if (selectedFile && ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(selectedFile.type)) {
         this.file = selectedFile
         this.error = null
       } else {
         this.file = null
-        this.error = 'Please select a PDF file.'
+        this.error = 'Please select a PDF or DOCX file.'
       }
     },
     async uploadResume() {
@@ -64,12 +64,12 @@ export default {
       try {
         this.error = null
         this.success = null
-        const response = await apiClient.post('/auth/upload-resume/', formData, {
+        await apiClient.post('/resumes/upload/', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         })
-        this.success = response.data.message
+        this.success = 'Resume uploaded successfully!'
         this.file = null
         document.getElementById('resume').value = '' // Reset file input
       } catch (err) {

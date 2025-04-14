@@ -25,7 +25,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     role = models.CharField(
         max_length=20,
-        choices=[('job_seeker', 'Job Seeker'), ('recruiter', 'Recruiter'), ('admin', 'Admin')]
+        choices=[('job_seeker', 'Job Seeker'), ('recruiter', 'Recruiter'), ('admin', 'Admin')],
+        default='job_seeker'
     )
     is_verified = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)

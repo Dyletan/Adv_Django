@@ -4,6 +4,8 @@ import LoginPage from '../views/Login.vue'
 import JobListPage from '../views/JobList.vue'
 import UploadResumePage from '../views/UploadResume.vue'
 import JobCreatePage from '../views/JobCreate.vue'
+import JobDetailPage from '../views/JobDetail.vue'
+
 
 const routes = [
   {
@@ -19,20 +21,26 @@ const routes = [
     path: '/jobs', 
     name: 'JobList', 
     component: JobListPage,
-    meta: { requiresAuth: true }, // Mark as protected
+    meta: { requiresAuth: true },
   },
   { 
     path: '/upload-resume', 
     name: 'UploadResume', 
     component: UploadResumePage,
-    meta: { requiresAuth: true, role: 'job_seeker' }, // Protected, job seekers only
+    meta: { requiresAuth: true, role: 'job_seeker' },
   },
   { 
     path: '/create-job', 
     name: 'JobCreate', 
     component: JobCreatePage,
-    meta: { requiresAuth: true, role: 'recruiter' }, // Protected, recruiters only
+    meta: { requiresAuth: true, role: 'recruiter' },
   },
+  {
+    path: '/jobs/:id',
+    name: 'JobDetail',
+    component: JobDetailPage,
+    meta: { requiresAuth: true },
+  }
 ]
 
 const router = createRouter({

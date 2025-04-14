@@ -8,7 +8,6 @@ from django.http import Http404
 from django.core.mail import send_mail
 from .models import User, JobSeekerProfile
 from .serializers import RegisterSerializer, LoginSerializer, JobSeekerProfileSerializer
-from resumes.parser import parse_resume
 from analytics.models import LogEntry
 
 class RegisterView(APIView):
@@ -49,6 +48,7 @@ class LoginView(APIView):
                 return Response({
                     'refresh': str(refresh),
                     'access': str(refresh.access_token),
+                    'role': user.role
                 })
             return Response({"error": "Invalid credentials or email not verified"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -70,27 +70,6 @@ class VerifyEmailView(APIView):
             return Response({"message": "Email verified successfully"}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             raise Http404("Verification link is invalid or expired")
-
-class ResumeUploadView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        if request.user.role != 'job_seeker':
-            return Response({"error": "Only Job Seekers can upload resumes"}, status=status.HTTP_403_FORBIDDEN)
-        serializer = JobSeekerProfileSerializer(data=request.data)
-        if serializer.is_valid():
-            profile = JobSeekerProfile.objects.create(user=request.user, **serializer.validated_data)
-            try:
-                parsed_resume = parse_resume(profile.resume.path, str(request.user.id))
-                LogEntry.objects.create(
-                    user_id=str(request.user.id),
-                    action="upload_resume",
-                    details=f"Uploaded resume: {profile.resume.name}"
-                )
-                return Response({"message": "Resume uploaded and parsed successfully"}, status=status.HTTP_201_CREATED)
-            except Exception as e:
-                return Response({"error": f"Failed to parse resume: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class JobSeekerProfileListView(APIView):
     permission_classes = [IsAuthenticated]

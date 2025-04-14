@@ -18,7 +18,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'eldar1016@gmail.com'
-EMAIL_HOST_PASSWORD = 'obscured'
+EMAIL_HOST_PASSWORD = 'vokvrvwexzrlghql'
 
 
 # Application definition
@@ -101,7 +101,6 @@ connect(
     port=27017
 )
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -115,15 +114,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'my_mysql_db',
         'USER': 'root',
-        'PASSWORD': 'obscured',
+        'PASSWORD': '@Plinplinplon2',
         'HOST': 'localhost',
         'PORT': '3306',
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
