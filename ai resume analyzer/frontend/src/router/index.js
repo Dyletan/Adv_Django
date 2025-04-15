@@ -5,6 +5,7 @@ import JobListPage from '../views/JobList.vue'
 import UploadResumePage from '../views/UploadResume.vue'
 import JobCreatePage from '../views/JobCreate.vue'
 import JobDetailPage from '../views/JobDetail.vue'
+import RecruiterApplications from '../views/RecruiterApplication.vue'
 
 
 const routes = [
@@ -40,6 +41,12 @@ const routes = [
     name: 'JobDetail',
     component: JobDetailPage,
     meta: { requiresAuth: true },
+  },
+  {
+    path: '/recruiter-applications',
+    name: 'RecruiterApplications',
+    component: RecruiterApplications,
+    meta: { requiresAuth: true, requiresRecruiter: true },
   }
 ]
 
