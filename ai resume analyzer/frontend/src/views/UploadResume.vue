@@ -37,11 +37,6 @@
             class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 max-w-[200px]"
             :disabled="!file"
           >
-            <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-              <svg class="h-5 w-5 text-blue-500 group-hover:text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 010 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L7 10.586V3a1 1 0 112 0v7.586l2.293-2.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-              </svg>
-            </span>
             Upload Resume
           </button>
         </div>
@@ -96,7 +91,7 @@ export default {
         })
         this.success = 'Resume uploaded successfully!'
         this.file = null
-        document.getElementById('resume').value = '' // Reset file input
+        document.getElementById('resume').value = ''
       } catch (err) {
         this.error = err.response?.data?.error || 'Failed to upload resume.'
       }

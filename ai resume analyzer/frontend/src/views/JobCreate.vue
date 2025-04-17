@@ -94,10 +94,7 @@
                   @click="removeSkill(skill)"
                   class="inline-flex items-center justify-center h-4 w-4 rounded-full ml-2 text-blue-400 hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <span class="sr-only">Remove skill</span>
-                  <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M2.293 2.293a1 1 0 011.414 0L4 5.586 6.293 2.293a1 1 0 111.414 1.414L5.414 7l2.293 2.293a1 1 0 01-1.414 1.414L4 8.414 1.707 9.707a1 1 0 01-1.414-1.414L2.586 7 .293 4.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                  </svg>
+                  <span class="sr-only">x</span>
                 </button>
               </span>
             </div>
@@ -130,9 +127,6 @@
             class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 max-w-[200px]"
           >
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-              <svg class="h-5 w-5 text-blue-500 group-hover:text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 010 2h2v2a1 1 0 102 0v-2h2a1 1 0 010-2h-2V7a1 1 0 01-1-1z" clip-rule="evenodd" />
-              </svg>
             </span>
             Create Job
           </button>

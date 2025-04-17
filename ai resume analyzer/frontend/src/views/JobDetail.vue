@@ -101,38 +101,63 @@ export default {
       try {
         this.error = null
         const jobId = this.$route.params.id
-        this.job = (await apiClient.get(`/jobs/${jobId}/`)).data
+        const token = localStorage.getItem('access_token')
+        this.job = (await apiClient.get(`/jobs/${jobId}/`, {
+          headers: {
+            'Authorization': token ? `Bearer ${token}` : undefined
+          }
+        })).data
       } catch (err) {
         this.error = 'Failed to load job details.'
+        console.error('Fetch job error:', err.response?.data, err.response?.status)
       }
     },
     async fetchResumes() {
       try {
         this.error = null
-        this.resumes = (await apiClient.get('/jobs/resumes/')).data
+        const token = localStorage.getItem('access_token')
+        this.resumes = (await apiClient.get('/jobs/resumes/', {
+          headers: {
+            'Authorization': token ? `Bearer ${token}` : undefined
+          }
+        })).data
         console.log('Fetched resumes:', this.resumes)
         if (this.resumes.length === 0) {
           this.error = 'No resumes found. Please upload a resume at /upload-resume.'
         }
       } catch (err) {
         this.error = 'Failed to load resumes.'
-        console.error('Resume fetch error:', err)
+        console.error('Resume fetch error:', err.response?.data, err.response?.status)
       }
     },
     async applyJob() {
       if (this.applying) return
-      this.applying = true;
+      this.applying = true
       try {
         this.error = null
         this.success = null
         const jobId = this.$route.params.id
+        const token = localStorage.getItem('access_token')
+
+        // Debug: Log the request details
+        console.log('Applying to job ID:', jobId)
+        console.log('Selected resume ID:', this.selectedResume)
+        console.log('Access token:', token)
+
         const response = await apiClient.post(`/jobs/${jobId}/apply/`, {
           resume_id: this.selectedResume
+        }, {
+          headers: {
+            'Authorization': token ? `Bearer ${token}` : undefined
+          }
         })
+
+        console.log('Apply response:', response.data)
         this.success = 'Application submitted successfully!'
         this.match_score = response.data.match_score
         this.feedback_text = response.data.feedback_text
       } catch (err) {
+        console.error('Apply error:', err.response?.data, err.response?.status)
         this.error = err.response?.data?.error || 'Failed to apply.'
       } finally {
         this.applying = false
@@ -152,7 +177,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-/* You can add more specific styles here if needed */
-</style>
