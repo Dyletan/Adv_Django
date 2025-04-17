@@ -3,3 +3,4 @@ from .models import User, JobSeekerProfile
 
 
 admin.site.register(User)
+admin.site.register(JobSeekerProfile)

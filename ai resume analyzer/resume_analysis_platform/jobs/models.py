@@ -31,7 +31,8 @@ class JobListing(models.Model):
 class Application(models.Model):
     job_seeker = models.ForeignKey(JobSeekerProfile, on_delete=models.CASCADE)
     job_listing = models.ForeignKey(JobListing, on_delete=models.CASCADE)
-    resume_used = models.FileField(upload_to='resumes/')
+    resume_used = models.FileField(upload_to='resumes/', blank=True, null=True)
+    resume_id = models.CharField(max_length=255, blank=True, null=True)
     feedback_text = models.TextField(blank=True)
     match_score = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
     created_at = models.DateTimeField(auto_now_add=True)

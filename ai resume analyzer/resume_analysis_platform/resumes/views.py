@@ -24,32 +24,29 @@ class UploadResumeView(APIView):
         try:
             # Extract text using parser
             text = extract_resume_text(file)
-
-            if not text:
+            if not text.strip():
                 return Response({"error": "Could not extract text from file"}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Update or create ParsedResume
+            # Create new ParsedResume
             user_id = str(request.user.id)
-            parsed_resume = ParsedResume.objects(user_id=user_id).order_by('-created_at').first()
-
-            if parsed_resume:
-                parsed_resume.text = text
-                parsed_resume.created_at = datetime.now()
-                parsed_resume.save()
-            else:
-                parsed_resume = ParsedResume(
-                    user_id=user_id,
-                    text=text
-                )
-                parsed_resume.save()
-
+            parsed_resume = ParsedResume.objects.create(
+                user_id=user_id,
+                text=text,
+                file_name=file.name,
+                created_at=datetime.now()
+            )
 
             LogEntry.objects.using('analytics').create(
                 user_id=user_id,
                 action="upload_resume",
-                details=f"Uploaded resume for user {user_id}"
+                details=f"Uploaded resume {str(parsed_resume.id)} for user {user_id}, file: {file.name}"
             )
-            return Response({"message": "Resume uploaded successfully"}, status=status.HTTP_201_CREATED)
+            return Response({
+                "message": "Resume uploaded successfully",
+                "resume_id": str(parsed_resume.id),
+                "text_preview": text[:100],
+                "file_name": file.name
+            }, status=status.HTTP_201_CREATED)
         except ValueError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:

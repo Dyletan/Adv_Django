@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center p-4">
     <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-8">
-      <!-- Logo/Icon Placeholder -->
+      
       <div class="flex justify-center mb-6">
         <div class="w-12 h-12 flex items-center justify-center">
           <svg class="h-full w-full text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -75,7 +75,7 @@ export default {
       try {
         this.error = null
         const response = await apiClient.post('/auth/login/', this.loginForm)
-        console.log('Login response:', response.data) // Debug log to inspect backend response
+        console.log('Login response:', response.data)
 
         const { access, refresh, role } = response.data
         if (!role) {
@@ -87,8 +87,9 @@ export default {
         localStorage.setItem('user_role', role)
 
         this.resetForms()
-        this.$router.push('/jobs')
+        this.$router.push(role.toLowerCase() === 'recruiter' ? '/my-listings' : '/jobs')
       } catch (err) {
+        console.error('Login error:', err.response?.data || err.message)
         this.error = err.response?.data?.error || err.message || 'Login failed.'
       }
     },

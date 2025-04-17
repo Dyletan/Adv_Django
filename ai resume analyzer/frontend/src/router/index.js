@@ -6,14 +6,18 @@ import UploadResumePage from '../views/UploadResume.vue'
 import JobCreatePage from '../views/JobCreate.vue'
 import JobDetailPage from '../views/JobDetail.vue'
 import RecruiterApplications from '../views/RecruiterApplication.vue'
-
+import MyListingsPage from '../views/MyListings.vue'
 
 const routes = [
   {
     path: '/',
     redirect: () => {
       const token = localStorage.getItem('access_token')
-      return token ? '/jobs' : '/login'
+      const userRole = localStorage.getItem('user_role')?.toLowerCase()
+      if (token) {
+        return userRole === 'recruiter' ? '/my-listings' : '/jobs'
+      }
+      return '/login'
     },
   },
   { path: '/register', name: 'Register', component: RegisterPage },
@@ -43,10 +47,17 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/recruiter-applications',
+    path: '/my-listings',
+    name: 'MyListings',
+    component: MyListingsPage,
+    meta: { requiresAuth: true, requiresRecruiter: true }
+  },
+  {
+    path: '/recruiter-applications/:job_id',
     name: 'RecruiterApplications',
     component: RecruiterApplications,
     meta: { requiresAuth: true, requiresRecruiter: true },
+    props: true
   }
 ]
 
@@ -55,16 +66,13 @@ const router = createRouter({
   routes,
 })
 
-// Navigation guard to protect routes
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('access_token')
   const userRole = localStorage.getItem('user_role')
 
   if (to.meta.requiresAuth && !token) {
-    // Redirect to login if the route requires auth and user is not logged in
     next('/login')
   } else if (to.meta.role && to.meta.role !== userRole) {
-    // Redirect to /jobs if the user doesn't have the required role
     next('/jobs')
   } else {
     next()

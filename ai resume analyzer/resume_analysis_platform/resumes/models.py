@@ -9,6 +9,7 @@ class Experience(EmbeddedDocument):
 class ParsedResume(Document):
     user_id = StringField(required=True)
     text = StringField(required=True)
+    file_name = StringField(required=True)
     created_at = DateTimeField(default=datetime.now)
 
     meta = {
